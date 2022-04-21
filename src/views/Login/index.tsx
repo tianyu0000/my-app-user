@@ -9,7 +9,6 @@ import routerPath from '@/router/router-path';
 import { ImageUploadItem } from 'antd-mobile/es/components/image-uploader';
 import { upload } from '@/utils/ali-oss';
 import { v4 as uuidv4 } from 'uuid';
-import { url } from 'inspector';
 
 const cx = classNames.bind(styles);
 
@@ -18,8 +17,7 @@ const Home: React.FC = () => {
   const [userName, setUserName] = useState("");
   const [userPwd, setPwd] = useState("");
   const { Login } = ServicesApi;
-  const [fileList, setFileList] = useState<ImageUploadItem[]>([])
-  const urlRef = useRef<string>();
+  const [fileList, setFileList] = useState<ImageUploadItem[]>()
   //登陆
   const login = async () => {
     console.log('登录===>userName:' + userName + ",userPwd:" + userPwd);
@@ -61,22 +59,11 @@ const Home: React.FC = () => {
     console.log("忘记密码");
   }
   //上传图片
-  const uploadImg: any = async (file: any) => {
-    console.log(file);
+  const uploadImg = async (file: File) => {
     let objName = uuidv4();
-    upload(`${objName}`, file).then(res => {
-      if (res) {
-        urlRef.current = res;
-        setFileList([{ url: urlRef.current }]);
-      }
-    });
-    return { url: urlRef.current }
+    let res = await upload(`${objName}`, file)
+    return {url: res!}
   }
-
-  useEffect(() => {
-    console.log(fileList);
-
-  }, [fileList])
   return (<>
     <div>
       <Form layout='vertical'
@@ -91,8 +78,10 @@ const Home: React.FC = () => {
                   content: (<>
                     <Form layout='horizontal' mode='card'>
                       <ImageUploader
+                        value={fileList}
                         onChange={setFileList}
                         upload={uploadImg}
+                        maxCount={1}
                       />
                       <Form.Header>账号:</Form.Header>
                       <Form.Item>

@@ -1,5 +1,6 @@
 // 引入ali-oss
 import OSS from 'ali-oss'
+import {ImageUploadItem} from "antd-mobile/es/components/image-uploader";
 
 /**
  *  [accessKeyId] {String}：通过阿里云控制台创建的AccessKey。
@@ -23,7 +24,7 @@ const client = new OSS({
  *
  * @retruns Promise
  */
-export const upload = async (ObjName: String, fileUrl: String) => {
+export const upload = async (ObjName: String, fileUrl: File) => {
   try {
     let result = await client.put(`hotelSystem/${ObjName}`, fileUrl)
     // hotelSystem为文件夹， ObjName为文件名字,可以只写名字，就直接储存在 bucket 的根路径
