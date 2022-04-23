@@ -33,9 +33,6 @@ const BasicLayout: React.FC<RouteProps> = ({ children }) => {
 
   return (
     <div className={cx('app')}>
-      <div className={styles.top}>
-
-      </div>
       <div className={cx('body')}>
         {children}
       </div>

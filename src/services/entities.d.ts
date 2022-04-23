@@ -47,7 +47,7 @@ export interface orderInfo {
 
 export namespace UserApi {
   namespace Login {
-    interface data {
+    interface loginInfo {
       //账户
       name: string,
       //密码
@@ -57,6 +57,17 @@ export namespace UserApi {
   }
 
   namespace getUserInfo {
+    type ResponseData = BaseResponse<UserInfo>;
+  }
+
+  namespace register {
+    interface registerUserInfo {
+      name: string,
+      password: string,
+      photo: string,
+      userEmail: string,
+      userTel: string,
+    }
     type ResponseData = BaseResponse<UserInfo>;
   }
 
