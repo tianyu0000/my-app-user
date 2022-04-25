@@ -10,4 +10,9 @@ export const ServicesApi = {
   //用户注册
   Register: (data: UserApi.register.registerUserInfo): Promise<UserApi.register.ResponseData> => post(ApiPaths.userRegister, data),
 
+  //获取指定name用户信息
+  getUserInfoByName: (data: UserApi.getUserInfoByName.UserName): Promise<UserInfo> => get(ApiPaths.userInfo, data),
+
+  //修改用户信息
+  ChangeUserInfo: (data: UserApi.changeInfo.changeData): Promise<UserApi.changeInfo.ResponseData> => post(ApiPaths.updateUser, data)
 }

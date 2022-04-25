@@ -48,15 +48,16 @@ export interface orderInfo {
 export namespace UserApi {
   namespace Login {
     interface loginInfo {
-      //账户
       name: string,
-      //密码
       password: string
     }
     type ResponseData = BaseResponse<UserInfo>;
   }
 
-  namespace getUserInfo {
+  namespace getUserInfoByName {
+    interface UserName {
+      name: string,
+    }
     type ResponseData = BaseResponse<UserInfo>;
   }
 
@@ -67,6 +68,16 @@ export namespace UserApi {
       photo: string,
       userEmail: string,
       userTel: string,
+    }
+    type ResponseData = BaseResponse<UserInfo>;
+  }
+  namespace changeInfo {
+    interface changeData {
+      name: string,
+      password?: string,
+      photo?: string,
+      userEmail?: string,
+      userTel?: string,
     }
     type ResponseData = BaseResponse<UserInfo>;
   }

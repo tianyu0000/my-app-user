@@ -6,6 +6,7 @@ import routerPath from '@/router/router-path';
 import Home from '@/views/Home';
 import { getUserInfo } from '@/utils/storageUtils';
 import BasicLayout from '@/Layouts/basic-layout';
+import PersonalCenter from '@/views/PersonalCenter';
 
 export const LoginPartRoute: React.FC<RouteProps> = (props) => {
   const { component: Component, ...rest } = props;

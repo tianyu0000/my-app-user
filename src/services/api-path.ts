@@ -2,6 +2,7 @@ export const ApiPaths = {
   // adminLogin: '/manage/login',//管理员登录 后台
   login: '/user/login',//用户登录 前台
   userRegister: '/user/register',//用户注册 前台
+  userInfo: '/user/getInfo',//获取指定用户信息 前台
   // getUserList: '/user/all',//获取所有用户列表 后台
   // deleteUser: '/user/delete',//删除用户账号 后台
   updateUser: '/user/change',//修改用户信息 前台

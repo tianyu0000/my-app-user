@@ -11,12 +11,14 @@ import BasicLayout from '@/Layouts/basic-layout';
 import { LoginPartRoute } from './LoginPartRoute';
 import { NeedLoginRoute } from './NeedLoginRoute';
 import NotFind from '@/views/NotFind';
+import ForgetPwd from '@/views/ForgetPwd';
 const Router: React.FC = () => {
   const history = createBrowserHistory();
   return (
     <BaseRouter history={history}>
       <Switch>
         <LoginPartRoute path={routerPath.Home} exact component={Home} />
+        <LoginPartRoute path={routerPath.ForgetPwd} exact component={ForgetPwd} />
         <NeedLoginRoute path={routerPath.Room} exact component={Room} />
         <NeedLoginRoute path={routerPath.Login} exact component={Login} />
         <NeedLoginRoute path={routerPath.Order} exact component={Order} />

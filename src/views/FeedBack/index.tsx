@@ -4,9 +4,9 @@ import styles from './styles.module.scss';
 
 const cx = classNames.bind(styles);
 
-const Home: React.FC = () => {
+const FeedBack: React.FC = () => {
   console.log();
   return <div>这是订单反馈</div>;
 };
 
-export default Home;
+export default FeedBack;
