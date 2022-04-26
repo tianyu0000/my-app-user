@@ -27,6 +27,7 @@ const ChangeAvatar: React.FC<childProps> = (props) => {
     if (avatarRef.current.length == 0) {
       Toast.show({ icon: 'fail', content: '您尚未选择头像!' })
     } else {
+      console.log(props);
       props.handleSetInfo(avatarRef.current)
       Modal.clear();
       Toast.show({ icon: 'success', content: '修改头像成功!' })

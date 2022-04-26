@@ -12,6 +12,7 @@ import { LoginPartRoute } from './LoginPartRoute';
 import { NeedLoginRoute } from './NeedLoginRoute';
 import NotFind from '@/views/NotFind';
 import ForgetPwd from '@/views/ForgetPwd';
+import FeedBack from '@/views/FeedBack';
 const Router: React.FC = () => {
   const history = createBrowserHistory();
   return (
@@ -22,6 +23,7 @@ const Router: React.FC = () => {
         <NeedLoginRoute path={routerPath.Room} exact component={Room} />
         <NeedLoginRoute path={routerPath.Login} exact component={Login} />
         <NeedLoginRoute path={routerPath.Order} exact component={Order} />
+        <NeedLoginRoute path={routerPath.FeedBack} exact component={FeedBack} />
         <NeedLoginRoute path={routerPath.PersonalCenter} exact component={PersonalCenter} />
         <NeedLoginRoute path="*" exact component={NotFind} />
       </Switch>

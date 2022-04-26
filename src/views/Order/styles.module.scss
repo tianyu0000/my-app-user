@@ -1,0 +1,27 @@
+.main {
+
+  .card {
+    margin-top: 2rem;
+    background-color: darkgray;
+    border: 1px dashed black;
+
+    .success {
+      color: green;
+    }
+
+    .fail {
+      color: red;
+    }
+
+    .warning {
+      color: orange;
+    }
+
+    .action-btn {
+      display: flex;
+      padding-top: 1rem;
+      justify-content: end;
+      border-top: 1px solid #e5e5e5;
+    }
+  }
+}

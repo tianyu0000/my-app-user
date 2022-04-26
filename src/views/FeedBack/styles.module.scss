@@ -1,0 +1,15 @@
+.main {
+  .top-area {
+
+    .vertical-center {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .btn-group {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+  }
+}

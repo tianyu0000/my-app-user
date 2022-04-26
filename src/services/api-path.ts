@@ -16,10 +16,12 @@ export const ApiPaths = {
 
   createOrder: '/order/create',//生成订单 前台
   updateRoomDate: '/order/updateRoomDate',//更新订单房间时间 前台
-  searchOrder: '/user/order',//用户查询订单 前台
+  searchOrder: '/order/searchByUserId',//用户查询订单 前台
   cancelOrder: '/user/cancelOrder',//用户取消订单 前台
   freeRoom: '/user/freeRoom',//用户取消房间订单后,释放房间 前台
   payOrder: '/user/payOrder',//用户支付订单，修改订单状态 前台
   // getOrderList: '/order/list',//获取所有订单列表 后台
   // checkRoom: '/user/checkRoom',//管理员确认订单,修改订单状态 后台
+
+  sendEmail: '/mail',
 }

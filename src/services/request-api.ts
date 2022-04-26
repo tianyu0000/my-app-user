@@ -1,5 +1,5 @@
 import { get, post, del, put } from "./request";
-import { OrderApi, RoomApi, UserApi, UserInfo } from './entities'
+import { EmailApi, OrderApi, OrderInfo, RoomApi, UserApi, UserInfo } from './entities'
 import { ApiPaths } from "./api-path";
 
 export const ServicesApi = {
@@ -14,5 +14,11 @@ export const ServicesApi = {
   getUserInfoByName: (data: UserApi.getUserInfoByName.UserName): Promise<UserInfo> => get(ApiPaths.userInfo, data),
 
   //修改用户信息
-  ChangeUserInfo: (data: UserApi.changeInfo.changeData): Promise<UserApi.changeInfo.ResponseData> => post(ApiPaths.updateUser, data)
+  ChangeUserInfo: (data: UserApi.changeInfo.changeData): Promise<UserApi.changeInfo.ResponseData> => post(ApiPaths.updateUser, data),
+
+  //根据用户id获取订单
+  getOrdersByUserId: (data: OrderApi.orderId.searchByUserId): Promise<OrderInfo[]> => get(ApiPaths.searchOrder, data),
+
+  //反馈发送Email
+  sendEmail: (data: EmailApi.emailForm.info): Promise<EmailApi.emailForm.ResponseData> => post(ApiPaths.sendEmail, data)
 }

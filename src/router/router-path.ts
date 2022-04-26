@@ -3,6 +3,7 @@ const routerPath = {
   Login: '/login',
   ForgetPwd: '/forgetPwd',
   PersonalCenter: '/personalCenter',
+  FeedBack: '/feedBack',
   Order: '/order',
   Room: '/room',
   NotFind: '/404',

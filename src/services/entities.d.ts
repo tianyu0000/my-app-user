@@ -33,12 +33,13 @@ export interface RoomInfo {
   r_type: string
 }
 
-export interface orderInfo {
+export interface OrderInfo {
+  [x: string]: any;
   _id: string,
   o_id: string,
   o_room_id: string,
   o_roomDate: Array<string>,
-  days: Number,
+  o_user_id: string,
   o_money: Number,
   o_userTel: string,
   o_createDate: string,
@@ -133,9 +134,22 @@ export namespace OrderApi {
     type ResponseData = BaseResponse<orderInfo>
   }
   namespace orderId {
-    interface id {
-      o_id: string
+    interface searchByUserId {
+      o_user_id: string
     }
     type ResponseData = BaseResponse<orderInfo>
+  }
+}
+
+export namespace EmailApi {
+  namespace emailForm {
+    interface info {
+      o_id: string,
+      o_room_id: string,
+      username: string,
+      address: string,
+      content: string
+    }
+    type ResponseData = BaseResponse<string>
   }
 }
