@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Key, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
 import { Button, Card, Empty, Popover, SafeArea, Toast } from 'antd-mobile';
@@ -9,21 +9,22 @@ import {
   TransportQRcodeOutline,
 } from 'antd-mobile-icons'
 import { ServicesApi } from '@/services/request-api';
-import { OrderInfo } from '@/services/entities';
+import { OrderInfo, UserInfo } from '@/services/entities';
 import { Action } from 'antd-mobile/es/components/popover'
 import { List } from 'rc-field-form';
 import { useHistory } from 'react-router-dom';
 import routerPath from '@/router/router-path';
+import { getUserInfo } from '@/utils/storageUtils';
 
 const cx = classNames.bind(styles);
-interface childProps {
-  handleRes: Function;
-}
-const Order: React.FC<childProps> = ({handleRes}) => {
+
+const Order: React.FC = () => {
   const history = useHistory();
-  const { getOrdersByUserId } = ServicesApi;
+  const { getOrdersByUserId, payOrder, cancelOrder } = ServicesApi;
   const [orderList, setOrderList] = useState<OrderInfo[]>([]);
   const [orderInfo, setOrderInfo] = useState<OrderInfo>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const userInfoRef = useRef();
   const refMap = useRef<OrderInfo>();
   //o_state===1
   const actions_notPay: Action[] = [
@@ -38,35 +39,56 @@ const Order: React.FC<childProps> = ({handleRes}) => {
   const actions_finishOrder: Action[] = [
     { key: 'feedback', icon: <FillinOutline />, text: '订单反馈', onClick: () => { doOrderFeedBack() } }
   ]
+  const handleSort = (prop: string) => {
+    return (value1: OrderInfo, value2: OrderInfo) => {
+      const x = value1[prop];
+      const y = value2[prop];
+      return y - x;
+    }
+  }
 
   //根据用户id获取所有订单
-  const doOrdersByUserId = () => {
-    getOrdersByUserId({
-      o_user_id: "1111"
+  const doOrdersByUserId = async () => {
+    await getOrdersByUserId({
+      o_user_id: userInfo?._id!
+      // o_user_id: "6263c204c2b75e42fca2a7c9"
     }).then((res) => {
-      res.map((item, index) => {
+      res.map((item: OrderInfo, index: number) => {
         Object.assign(item, {
-          key: index + 1
+          key: index++
         })
       })
+      //订单按key值 倒序排序(订单生成的同时key值递增)
+      res.sort(handleSort('key'))
       setOrderList(res);
     })
   }
   //订单付款
-  const doPayOrder = () => {
-    // console.log('付款');
-
+  const doPayOrder = async () => {
+    await payOrder({
+      o_id: orderInfo?.o_id!
+    }).then((res) => {
+      doOrdersByUserId();
+      Toast.show({ icon: 'success', content: res.msg })
+    })
   }
   //订单反馈
   const doOrderFeedBack = () => {
-    // history.replace(routerPath.FeedBack,orderInfo);
+    history.replace(routerPath.FeedBack, orderInfo);
   }
   //取消订单
-  const doCancelOrder = () => {
-
+  const doCancelOrder = async () => {
+    await cancelOrder({
+      o_id: orderInfo?.o_id!
+    }).then((res) => {
+      doOrdersByUserId();
+      Toast.show({ icon: 'success', content: res.msg });
+    })
   }
   useEffect(() => {
     doOrdersByUserId();
+    let userInfo = getUserInfo();
+    setUserInfo(userInfo);
 
   }, [])
   return <div className={cx('main')}> {orderList.length === 0 ?
@@ -91,7 +113,7 @@ const Order: React.FC<childProps> = ({handleRes}) => {
               placement='left-start'
               trigger='click'
             >
-              <Button color='primary' size='small' disabled={item.o_state === 3 ? true : false} onClick={() => { setOrderInfo(item)}}>操作</Button>
+              <Button color='primary' size='small' disabled={item.o_state === 3 ? true : false} onClick={() => { setOrderInfo(item) }}>操作</Button>
             </Popover.Menu>
           </div>
         </Card>

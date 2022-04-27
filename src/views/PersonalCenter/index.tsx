@@ -15,7 +15,7 @@ import ChangeEmail from './components/changeEmail';
 const cx = classNames.bind(styles);
 
 const PersonalCenter: React.FC = () => {
-  const { ChangeUserInfo } = ServicesApi;
+  const { ChangeUserInfo, getOrdersByUserId } = ServicesApi;
   const history = useHistory();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   //注销登录

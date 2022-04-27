@@ -46,6 +46,11 @@ export interface OrderInfo {
   o_state: Number
 }
 
+export interface OrderDataResponse<T = any> {
+  data: T,
+  msg: string
+}
+
 export namespace UserApi {
   namespace Login {
     interface loginInfo {
@@ -92,10 +97,6 @@ export namespace UserApi {
 }
 
 export namespace RoomApi {
-  interface
-  namespace getRoomInfo {
-    type ResponseData = BaseResponse<RoomInfo>;
-  }
 
   namespace addRoom {
     interface form {
@@ -130,16 +131,46 @@ export namespace RoomApi {
 }
 
 export namespace OrderApi {
-  namespace getOrderInfo {
-    type ResponseData = BaseResponse<orderInfo>
-  }
-  namespace orderId {
+
+  namespace userId {
     interface searchByUserId {
       o_user_id: string
     }
-    type ResponseData = BaseResponse<orderInfo>
+    type ResponseData = BaseResponse<OrderInfo>
+  }
+  namespace orderId {
+    interface changeOrderStateByOrderId {
+      o_id: string
+    }
+    type ResponseData = OrderDataResponse<OrderInfo>
+  }
+  namespace roomId {
+    interface changeOrderStateByRoomId {
+      o_room_id: string
+    }
+    type ResponseData = OrderDataResponse<OrderInfo>;
+  }
+  namespace orderRoomId {
+    interface changeOrderDateByRoomId {
+      o_room_id: string
+    }
+    type ResponseData = BaseResponse<OrderInfo>
+  }
+  namespace createOrder {
+    interface info {
+      o_id: string,
+      o_room_id: string,
+      o_roomDate: Array<string>,
+      o_user_id: string,
+      o_money: Number,
+      o_userTel: string,
+      o_createDate: string,
+      o_state: Number
+    }
+    type ResponseData = BaseResponse<OrderInfo>
   }
 }
+
 
 export namespace EmailApi {
   namespace emailForm {
@@ -149,6 +180,20 @@ export namespace EmailApi {
       username: string,
       address: string,
       content: string
+    }
+    type ResponseData = BaseResponse<string>
+  }
+}
+
+export namespace CommentApi {
+  namespace addComment {
+    interface info {
+      photo?: string,
+      id: string,
+      name: string,
+      comment_date: string,
+      comment_imgs?: string,
+      comment_content: string,
     }
     type ResponseData = BaseResponse<string>
   }
