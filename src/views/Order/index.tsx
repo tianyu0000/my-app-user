@@ -19,7 +19,7 @@ const cx = classNames.bind(styles);
 interface childProps {
   handleRes: Function;
 }
-const Order: React.FC<childProps> = (props) => {
+const Order: React.FC<childProps> = ({handleRes}) => {
   const history = useHistory();
   const { getOrdersByUserId } = ServicesApi;
   const [orderList, setOrderList] = useState<OrderInfo[]>([]);
@@ -59,8 +59,7 @@ const Order: React.FC<childProps> = (props) => {
   }
   //订单反馈
   const doOrderFeedBack = () => {
-    console.log(props);
-    // history.replace(routerPath.FeedBack);
+    // history.replace(routerPath.FeedBack,orderInfo);
   }
   //取消订单
   const doCancelOrder = () => {
@@ -92,7 +91,7 @@ const Order: React.FC<childProps> = (props) => {
               placement='left-start'
               trigger='click'
             >
-              <Button color='primary' size='small' disabled={item.o_state === 3 ? true : false} onClick={() => { setOrderInfo(item) }}>操作</Button>
+              <Button color='primary' size='small' disabled={item.o_state === 3 ? true : false} onClick={() => { setOrderInfo(item)}}>操作</Button>
             </Popover.Menu>
           </div>
         </Card>

@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 interface childProps {
   inputValue: string,
 }
-const FeedBack: React.FC<childProps> = (props) => {
+const FeedBack: React.FC<childProps> = ({inputValue}) => {
   const history = useHistory();
   const { sendEmail } = ServicesApi;
   const [form] = Form.useForm();
@@ -31,10 +31,13 @@ const FeedBack: React.FC<childProps> = (props) => {
     }
   }
   useEffect(() => {
-    const userInfo = getUserInfo();
-    setUserInfo(userInfo);
-    console.log(props.inputValue);
-
+    if (history.location.state) {
+      //  有值，正常流程，接下来操作：
+      const userInfo = getUserInfo();
+      setUserInfo(userInfo);
+    } else {
+      // 没值。错误流程，跳转404？
+    }
   }, [])
   return <div className={cx('main')}>
     <div className={cx('top-area')}>
