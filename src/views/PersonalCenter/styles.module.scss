@@ -1,17 +1,21 @@
-.list {
-  .info-list {
+.main {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    .avatar {
+  .list {
+    .info-list {
+
+      .avatar {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .signOut-btn {
       display: flex;
       justify-content: center;
     }
-
-
-
-  }
-
-  .signOut-btn {
-    display: flex;
-    justify-content: center;
   }
 }

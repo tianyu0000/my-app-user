@@ -19,15 +19,15 @@ export interface UserInfo {
 export interface RoomInfo {
   _id: string,
   r_head: string,
-  r_imgs: Array,
+  r_imgs: string[],
   r_title: string,
   r_desc: string,
   r_bedrooms: Number,
   r_beds: Number,
   r_wc: Number,
   r_people: Number,
-  r_comment: Array,
-  r_date: Array,
+  r_comment: Array<any>,
+  r_date: string[],
   r_price: Number,
   r_tag: string,
   r_type: string
@@ -49,6 +49,10 @@ export interface OrderInfo {
 export interface OrderDataResponse<T = any> {
   data: T,
   msg: string
+}
+
+export interface RoomDataResponse<T = any> {
+  data: T,
 }
 
 export namespace UserApi {
@@ -97,6 +101,9 @@ export namespace UserApi {
 }
 
 export namespace RoomApi {
+  namespace getRoomList {
+    type ResponseData = RoomDataResponse<RoomInfo>;
+  }
 
   namespace addRoom {
     interface form {

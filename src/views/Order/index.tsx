@@ -48,10 +48,9 @@ const Order: React.FC = () => {
   }
 
   //根据用户id获取所有订单
-  // TODO 这里的any类型改成你的user对应的类型
-  const doOrdersByUserId = async (user: any) => {
+  const doOrdersByUserId = async (user: UserInfo) => {
     await getOrdersByUserId({
-      o_user_id: "6257e7027c94bc56e056e8da"
+      o_user_id: user._id
     }).then((res) => {
       res.map((item: OrderInfo, index: number) => {
         Object.assign(item, {
@@ -68,7 +67,7 @@ const Order: React.FC = () => {
     await payOrder({
       o_id: orderInfo?.o_id!
     }).then((res) => {
-      doOrdersByUserId(userInfo);
+      doOrdersByUserId(userInfo as UserInfo);
       Toast.show({ icon: 'success', content: res.msg })
     })
   }
@@ -81,7 +80,7 @@ const Order: React.FC = () => {
     await cancelOrder({
       o_id: orderInfo?.o_id!
     }).then((res) => {
-      doOrdersByUserId(userInfo);
+      doOrdersByUserId(userInfo as UserInfo);
       Toast.show({ icon: 'success', content: res.msg });
     })
   }

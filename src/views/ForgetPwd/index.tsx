@@ -116,7 +116,7 @@ const ForgetPwd: React.FC = () => {
         </Form.Item>
       </Form>
 
-      {identity ? <div className={cx('main')}>
+      {identity ? <div >
         <Form layout="horizontal" form={step_3}>
           <Form.Header>Step 3</Form.Header>
           <Form.Item name='pwd_1' label='输入密码' rules={[{ validator: checkPwd }]}>

@@ -52,7 +52,7 @@ const Login: React.FC = () => {
     Toast.show({ duration: 1000, content: '请登录!' })
   }, [])
   return (
-    <div>
+    <div className={cx('main')}>
       <Form layout='horizontal'
         footer={
           <div className={cx('btn-group')}>

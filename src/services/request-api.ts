@@ -1,5 +1,5 @@
 import { get, post, del, put } from "./request";
-import { CommentApi, EmailApi, OrderApi, OrderInfo, UserApi, UserInfo } from './entities'
+import { CommentApi, EmailApi, OrderApi, OrderInfo, RoomApi, RoomInfo, UserApi, UserInfo } from './entities'
 import { ApiPaths } from "./api-path";
 
 export const ServicesApi = {
@@ -38,5 +38,8 @@ export const ServicesApi = {
   updateRoomDate: (data: OrderApi.orderRoomId.changeOrderDateByRoomId): Promise<OrderApi.orderRoomId.ResponseData> => post(ApiPaths.updateRoomDate, data),
 
   //用户对房间评论
-  addComment: (data: CommentApi.addComment.info): Promise<CommentApi.addComment.ResponseData> => post(ApiPaths.addComment, data)
+  addComment: (data: CommentApi.addComment.info): Promise<CommentApi.addComment.ResponseData> => post(ApiPaths.addComment, data),
+
+  //获取房间列表
+  getRoomList: (): Promise<RoomInfo[]> => get(ApiPaths.getRoomList),
 }

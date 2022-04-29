@@ -77,7 +77,7 @@ const PersonalCenter: React.FC = () => {
     let userInfo = getUserInfo();
     setUserInfo(userInfo);
   }, [])
-  return <>
+  return <div className={cx('main')}>
     <List mode='card' className={cx('list')}>
       <List.Item className={cx('info-list')}>
         <Space direction='vertical' className={cx('info')}>
@@ -124,7 +124,7 @@ const PersonalCenter: React.FC = () => {
       </List.Item>
     </List>
 
-  </>;
+  </div>;
 };
 
 export default PersonalCenter;
