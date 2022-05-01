@@ -20,7 +20,7 @@ const cx = classNames.bind(styles);
 
 const Order: React.FC = () => {
   const history = useHistory();
-  const { getOrdersByUserId, payOrder, cancelOrder } = ServicesApi;
+  const { getOrdersByUserId, payOrder, cancelOrder, freeRoomDate } = ServicesApi;
   const [orderList, setOrderList] = useState<OrderInfo[]>([]);
   const [orderInfo, setOrderInfo] = useState<OrderInfo>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -80,6 +80,13 @@ const Order: React.FC = () => {
     await cancelOrder({
       o_id: orderInfo?.o_id!
     }).then((res) => {
+      freeRoomDate({
+        o_room_id: orderInfo?.o_room_id!,
+        o_roomDate_start: orderInfo?.o_roomDate_start!,
+        o_roomDate_end: orderInfo?.o_roomDate_end!
+      }).then(res => {
+        console.log(res);
+      })
       doOrdersByUserId(userInfo as UserInfo);
       Toast.show({ icon: 'success', content: res.msg });
     })
@@ -97,7 +104,7 @@ const Order: React.FC = () => {
     /> :
     <div> {orderList.map((item, index) =>
       <div key={index} className={cx('card')}>
-        <Card title={'房间号:' + item.o_room_id} key={index} bodyClassName={cx('card-body')}>
+        <Card title={'房间名:' + item.o_user_name} key={index} bodyClassName={cx('card-body')}>
           <div className={cx('card-content')}>
             <div>订单号: {item.o_id}</div>
             <div>订单价格: {item.o_money} 元</div>

@@ -36,9 +36,10 @@ const BasicLayout: React.FC<RouteProps> = ({ children }) => {
       <div className={cx('body')}>
         {children}
       </div>
-      <div className={cx('bottom')}>
-        <Bottom />
-      </div>
+      {history.location.pathname === '/room' ? <></> :
+        <div className={cx('bottom')}>
+          <Bottom />
+        </div>}
     </div>
   )
 }

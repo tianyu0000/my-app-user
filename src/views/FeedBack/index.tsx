@@ -63,12 +63,13 @@ const FeedBack: React.FC<childProps> = ({ inputValue }) => {
         </Space>
       </Space>
     </div>
-
-    <Form layout='horizontal' form={form}>
-      <Form.Item name='text'>
-        <TextArea rows={8} maxLength={150} showCount={true} placeholder='请输入您需要反馈的内容，最大字数为150字。'></TextArea>
-      </Form.Item>
-    </Form >
+    <div className={cx('content')}>
+      <Form layout='horizontal' form={form}>
+        <Form.Item name='text'>
+          <TextArea rows={8} maxLength={150} showCount={true} placeholder='请输入您需要反馈的内容，最大字数为150字。'></TextArea>
+        </Form.Item>
+      </Form >
+    </div>
     <div className={cx('btn-group')}>
       <Button color='primary' onClick={doSendEmail} >提交反馈</Button>
       <Button color='warning' onClick={() => { history.replace(routerPath.Order) }}  >返回</Button>

@@ -27,7 +27,7 @@ export interface RoomInfo {
   r_wc: Number,
   r_people: Number,
   r_comment: Array<any>,
-  r_date: string[],
+  r_date: any[],
   r_price: Number,
   r_tag: string,
   r_type: string
@@ -38,12 +38,14 @@ export interface OrderInfo {
   _id: string,
   o_id: string,
   o_room_id: string,
-  o_roomDate: Array<string>,
+  o_roomDate_start: string,
+  o_roomDate_end: stringm,
   o_user_id: string,
   o_money: Number,
   o_userTel: string,
   o_createDate: string,
-  o_state: Number
+  o_state: Number,
+  o_user_name: string
 }
 
 export interface OrderDataResponse<T = any> {
@@ -152,14 +154,18 @@ export namespace OrderApi {
     type ResponseData = OrderDataResponse<OrderInfo>
   }
   namespace roomId {
-    interface changeOrderStateByRoomId {
-      o_room_id: string
+    interface changeRoomDateByRoomId {
+      o_room_id: string,
+      o_roomDate_start: string,
+      o_roomDate_end: string
     }
     type ResponseData = OrderDataResponse<OrderInfo>;
   }
   namespace orderRoomId {
-    interface changeOrderDateByRoomId {
-      o_room_id: string
+    interface changeRoomDateByRoomId {
+      o_room_id: string,
+      o_roomDate_start: string,
+      o_roomDate_end: string
     }
     type ResponseData = BaseResponse<OrderInfo>
   }
@@ -167,12 +173,13 @@ export namespace OrderApi {
     interface info {
       o_id: string,
       o_room_id: string,
-      o_roomDate: Array<string>,
+      o_roomDate_start: string,
+      o_roomDate_end: string,
       o_user_id: string,
       o_money: Number,
       o_userTel: string,
       o_createDate: string,
-      o_state: Number
+      o_user_name: string
     }
     type ResponseData = BaseResponse<OrderInfo>
   }

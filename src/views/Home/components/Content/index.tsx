@@ -33,7 +33,7 @@ const Content: React.FC = () => {
         borderStyle: 'dashed',
       }}
     >
-      热门房源
+      热门套房
     </Divider>
   </div>
     <CapsuleTabs style={{ width: '100%' }} onChange={(key) => {
@@ -51,7 +51,7 @@ const Content: React.FC = () => {
       <div key={index} className={cx('room-card')} onClick={() => { RoomDetail(item) }}>
         <Image src={item.r_head} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
         <div className={cx('describe')}>
-          <div className={cx('mini-font')}>酒店式公寓:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
+          <div className={cx('mini-font')}>热门套房:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
           <div className={cx('title')}>{item.r_title}</div>
           <div className={cx('price')}>￥{item.r_price}</div>
           <div className={cx('tag-row')}>
@@ -91,7 +91,7 @@ const Content: React.FC = () => {
         <div key={index} className={cx('room-card')} onClick={() => { RoomDetail(item) }}>
           <Image src={item.r_head} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
           <div className={cx('describe')}>
-            <div className={cx('mini-font')}>酒店式公寓:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
+            <div className={cx('mini-font')}>特惠套房:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
             <div className={cx('title')}>{item.r_title}</div>
             <div className={cx('price')}>￥{item.r_price}</div>
             <div className={cx('tag-row')}>
@@ -129,7 +129,7 @@ const Content: React.FC = () => {
       <div key={index} className={cx('room-card')} onClick={() => { RoomDetail(item) }}>
         <Image src={item.r_head} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
         <div className={cx('describe')}>
-          <div className={cx('mini-font')}>酒店式公寓:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
+          <div className={cx('mini-font')}>品质套房:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
           <div className={cx('title')}>{item.r_title}</div>
           <div className={cx('price')}>￥{item.r_price}</div>
           <div className={cx('tag-row')}>

@@ -10,7 +10,7 @@ export const ApiPaths = {
   // createRoom: '/room/add',//添加房间 后台
   // deleteRoom: '/room/delete',//删除房间 后台
   getRoomList: '/room/roomlist',//获取所有房间列表 前台and后台
-  // getRoomDetail: '/room/roomDetail',//根据_id获取房间详情 后台
+  getRoomDetail: '/room/roomDetail',//根据_id获取房间详情 前台and后台
   addComment: '/room/comment',//添加房间评论 前台
   // deleteComment: '/room/deleteComment',//删除房间评论 后台
 

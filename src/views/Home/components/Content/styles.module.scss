@@ -17,8 +17,7 @@
       .mini-font {
         font-size: 12px;
         color: gray;
-        transform: scale(0.9);
-        margin-left: -5%;
+        // transform: scale(0.9);
         white-space: nowrap;
         overflow: hidden;
       }
@@ -26,8 +25,7 @@
       .title {
         width: 100%;
         font-weight: bold;
-        font-size: 14px;
-        line-height: 14px;
+        font-size: 16px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;

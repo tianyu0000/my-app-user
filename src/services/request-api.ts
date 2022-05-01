@@ -29,17 +29,20 @@ export const ServicesApi = {
   cancelOrder: (data: OrderApi.orderId.changeOrderStateByOrderId): Promise<OrderApi.orderId.ResponseData> => post(ApiPaths.cancelOrder, data),
 
   //用户取消订单后,清空对应房间id的预订时间
-  freeRoomDate: (data: OrderApi.roomId.changeOrderStateByRoomId): Promise<OrderApi.roomId.ResponseData> => post(ApiPaths.freeRoom, data),
+  freeRoomDate: (data: OrderApi.roomId.changeRoomDateByRoomId): Promise<OrderApi.roomId.ResponseData> => post(ApiPaths.freeRoom, data),
 
   //用户预约房间,生成订单
   createOrder: (data: OrderApi.createOrder.info): Promise<OrderApi.createOrder.ResponseData> => post(ApiPaths.createOrder, data),
 
-  //生成订单之后,更新房间的r_date属性,表示被预订
-  updateRoomDate: (data: OrderApi.orderRoomId.changeOrderDateByRoomId): Promise<OrderApi.orderRoomId.ResponseData> => post(ApiPaths.updateRoomDate, data),
+  //生成订单之后,更新房间的时间数组:r_date属性,
+  updateRoomDate: (data: OrderApi.orderRoomId.changeRoomDateByRoomId): Promise<OrderApi.orderRoomId.ResponseData> => post(ApiPaths.updateRoomDate, data),
 
   //用户对房间评论
   addComment: (data: CommentApi.addComment.info): Promise<CommentApi.addComment.ResponseData> => post(ApiPaths.addComment, data),
 
   //获取房间列表
   getRoomList: (): Promise<RoomInfo[]> => get(ApiPaths.getRoomList),
+
+  //获取房间信息
+  getRoomDetail: (params: RoomApi.roomId.id): Promise<RoomApi.roomId.ResponseData> => get(ApiPaths.getRoomDetail, params),
 }
