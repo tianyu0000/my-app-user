@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
-import { Avatar, Button, List, Modal, Space } from 'antd-mobile';
+import { Avatar, Button, ImageViewer, List, Modal, Space } from 'antd-mobile';
 import { deleteUserInfo, getUserInfo, saveUserInfo } from '@/utils/storageUtils';
 import { useHistory } from 'react-router-dom';
 import { ApiPaths } from '@/services/api-path';
@@ -18,6 +18,7 @@ const PersonalCenter: React.FC = () => {
   const { ChangeUserInfo, getOrdersByUserId } = ServicesApi;
   const history = useHistory();
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [visible, setVisible] = useState<boolean>();
   //注销登录
   const doSignOut = () => {
     deleteUserInfo();
@@ -82,7 +83,16 @@ const PersonalCenter: React.FC = () => {
       <List.Item className={cx('info-list')}>
         <Space direction='vertical' className={cx('info')}>
           <div className={cx('avatar')}>
-            <Avatar src={userInfo?.photo!} style={{ '--size': '90px' }} />
+            <Avatar src={userInfo?.photo!} style={{ '--size': '90px', 'cursor': 'pointer' }} onClick={() => {
+              setVisible(true)
+            }} />
+            <ImageViewer
+              image={userInfo?.photo}
+              visible={visible}
+              onClose={() => {
+                setVisible(false)
+              }}
+            />
           </div>
           <div>用户名: {userInfo?.name}</div>
           <div>手机号: {userInfo?.userTel}</div>

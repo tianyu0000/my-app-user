@@ -1,17 +1,16 @@
-import React, { Key, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
-import { Button, Card, Empty, Popover, SafeArea, Toast } from 'antd-mobile';
+import { Button, Card, Empty, Popover, Toast } from 'antd-mobile';
 import {
   CloseOutline,
   HandPayCircleOutline,
   FillinOutline,
-  TransportQRcodeOutline,
+  RightOutline
 } from 'antd-mobile-icons'
 import { ServicesApi } from '@/services/request-api';
 import { OrderInfo, UserInfo } from '@/services/entities';
 import { Action } from 'antd-mobile/es/components/popover'
-import { List } from 'rc-field-form';
 import { useHistory } from 'react-router-dom';
 import routerPath from '@/router/router-path';
 import { getUserInfo } from '@/utils/storageUtils';
@@ -20,12 +19,10 @@ const cx = classNames.bind(styles);
 
 const Order: React.FC = () => {
   const history = useHistory();
-  const { getOrdersByUserId, payOrder, cancelOrder, freeRoomDate } = ServicesApi;
+  const { getOrdersByUserId, payOrder, cancelOrder, freeRoomDate, getRoomDetail } = ServicesApi;
   const [orderList, setOrderList] = useState<OrderInfo[]>([]);
   const [orderInfo, setOrderInfo] = useState<OrderInfo>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const userInfoRef = useRef();
-  const refMap = useRef<OrderInfo>();
   //o_state===1
   const actions_notPay: Action[] = [
     { key: 'payment', icon: <HandPayCircleOutline />, text: '付款', onClick: () => { doPayOrder() } },
@@ -80,16 +77,42 @@ const Order: React.FC = () => {
     await cancelOrder({
       o_id: orderInfo?.o_id!
     }).then((res) => {
-      freeRoomDate({
-        o_room_id: orderInfo?.o_room_id!,
-        o_roomDate_start: orderInfo?.o_roomDate_start!,
-        o_roomDate_end: orderInfo?.o_roomDate_end!
-      }).then(res => {
-        console.log(res);
-      })
+      if (res.status === 1004) {
+        Toast.show({ icon: 'fail', content: res.msg });
+      } else {
+        //取消订单之后，清除之前预订房间时锁定的起始、截止日期
+        freeRoomDate({
+          o_room_id: orderInfo?.o_room_id!,
+          o_roomDate_start: orderInfo?.o_roomDate_start!,
+          o_roomDate_end: orderInfo?.o_roomDate_end!
+        })
+        Toast.show({ icon: 'success', content: res.msg });
+      }
       doOrdersByUserId(userInfo as UserInfo);
-      Toast.show({ icon: 'success', content: res.msg });
     })
+  }
+  //跳转房间信息
+  const toRoomDetail = (info: OrderInfo) => {
+    getRoomDetail({
+      _id: info.o_room_id
+    }).then(res => {
+      history.replace(routerPath.Room, res.data)
+    })
+  }
+  //根据订单o_state显示对应的状态
+  const switchOrderState = (key: Number) => {
+    switch (key) {
+      case 1:
+        return <span className={cx('warning')}>待支付···</span>;
+      case 2:
+        return <span className={cx('warning')}>已支付,待核销···</span>;
+      case 3:
+        return <span className={cx('fail')}>订单已取消×</span>;
+      case 4:
+        return <span className={cx('success')}>订单已完成√</span>;
+      default:
+        return <></>
+    }
   }
   useEffect(() => {
     const user_info = getUserInfo()
@@ -104,12 +127,18 @@ const Order: React.FC = () => {
     /> :
     <div> {orderList.map((item, index) =>
       <div key={index} className={cx('card')}>
-        <Card title={'房间名:' + item.o_user_name} key={index} bodyClassName={cx('card-body')}>
+        <Card title={'房间名:' + item.o_user_name} key={index}
+          bodyClassName={cx('card-body')}
+          onHeaderClick={() => toRoomDetail(item)}
+          headerStyle={{ 'cursor': 'pointer' }}
+          extra={<RightOutline />}>
           <div className={cx('card-content')}>
             <div>订单号: {item.o_id}</div>
             <div>订单价格: {item.o_money} 元</div>
+            <div>房间起始日期: {item.o_roomDate_start}</div>
+            <div>房间截止日期: {item.o_roomDate_end}</div>
             <div>订单创建时间: {item.o_createDate}</div>
-            <div>订单状态: {item.o_state === 1 ? <span className={cx('warning')}>待支付···</span> : (item.o_state === 2 ? <span className={cx('warning')}>已支付,待核销···</span> : (item.o_state === 4 ? <span className={cx('success')}>订单完成√</span> : <span className={cx('fail')}>订单已取消×</span>))}</div>
+            <div>订单状态: {switchOrderState(item.o_state)}</div>
           </div>
           <div className={cx('action-btn')}>
             <Popover.Menu

@@ -20,6 +20,7 @@ export const ApiPaths = {
   cancelOrder: '/user/cancelOrder',//用户取消订单 前台 
   freeRoom: '/user/freeRoom',//用户取消房间订单后,释放房间 前台
   payOrder: '/user/payOrder',//用户支付订单，修改订单状态 前台
+  hasOrder: '/user/hasOrder',
   // getOrderList: '/order/list',//获取所有订单列表 后台
   // checkRoom: '/user/checkRoom',//管理员确认订单,修改订单状态 后台
 

@@ -21,7 +21,7 @@ const FeedBack: React.FC<childProps> = ({ inputValue }) => {
   const [orderInfo, setOrderInfo] = useState<OrderInfo>();
 
   const doSendEmail = () => {
-    if (!form.getFieldValue('text') || form.getFieldValue('text').length === 0) {
+    if (form.getFieldValue('text') === undefined || form.getFieldValue('text').length === 0) {
       Toast.show({ icon: 'fail', content: '内容为空!' })
     } else {
       sendEmail({

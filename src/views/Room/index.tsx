@@ -3,12 +3,12 @@ import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
 import { useHistory } from 'react-router-dom';
 import routerPath from '@/router/router-path';
-import { RoomInfo, UserInfo } from '@/services/entities';
+import { RoomInfo, UserInfo, Date, CommentInfo } from '@/services/entities';
 import Icon_1 from '@/assets/icon_1.png'
 import Icon_2 from '@/assets/icon_2.png'
 import Icon_3 from '@/assets/icon_3.png'
 import Icon_4 from '@/assets/icon_4.png'
-import { Button, NavBar, Swiper, Image, ImageViewer, Divider, Empty, Form, Toast } from 'antd-mobile';
+import { NavBar, Image, ImageViewer, Divider, Empty, Form, Toast, Modal, Switch, TextArea, Avatar } from 'antd-mobile';
 import DatePick from './components/DatePicker';
 import { ServicesApi } from '@/services/request-api';
 import { v4 as uuidv4 } from 'uuid'
@@ -17,27 +17,38 @@ import moment from 'moment'
 import CountDownText from './components/LoadingToast';
 
 const cx = classNames.bind(styles);
-interface Date {
-  date_start: string,
-  date_end: string
-}
+
 const Room: React.FC = () => {
-  const [form] = Form.useForm()
-  const { createOrder, getRoomDetail, updateRoomDate } = ServicesApi;
+  const [form] = Form.useForm();
+  const [form_comment] = Form.useForm();
+  const { createOrder, getRoomDetail, updateRoomDate, hasOrder, addComment } = ServicesApi;
   const history = useHistory();
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
   const [roomInfo_new, setRoomInfo_new] = useState<RoomInfo>();
   const [userInfo, serUserInfo] = useState<UserInfo>();
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [commentBtn, setCommentBtn] = useState<boolean>(false);
+  const [roomComments, setRoomComments] = useState<CommentInfo[]>([]);
 
+  ///获取房间详细信息
   const getRoomDetailById = (key: RoomInfo) => {
     getRoomDetail({
       _id: key._id
     }).then(res => {
-      setRoomInfo_new(res.data)
-
+      setRoomInfo_new(res.data);
+      setRoomComments(res.data.r_comment.reverse())
     })
   }
+  //检查该房间 该用户是否能评论
+  const checkUserHasOrder = (userKey: UserInfo, roomKEey: RoomInfo) => {
+    hasOrder({
+      o_room_id: roomKEey._id,
+      o_user_id: userKey._id
+    }).then(res => {
+      res.status === 1000 ? setCommentBtn(true) : console.log();
+    })
+  }
+  //检查选择的时期是否有冲突
   const checkDate = () => {
     let symbol = 0;
     roomInfo_new?.r_date.map((item: Date) => {
@@ -46,22 +57,16 @@ const Room: React.FC = () => {
       } else {
         symbol++
       }
+      return null
     })
-    console.log(roomInfo_new?.r_date);
-    console.log(symbol);
-
     if (symbol === 0) {
       return true
     } else {
       return false
     }
-
   }
-
   //预订房间
   const orderRoom = () => {
-
-
     // //判断日期是否为空
     if (form.getFieldValue('date_start') && form.getFieldValue('date_end')) {
       //判断起始日期是否在前
@@ -86,8 +91,6 @@ const Room: React.FC = () => {
               o_createDate: date,
               o_user_id: userInfo?._id!,
               o_user_name: userInfo?.name!
-            }).then(res => {
-              console.log(res);
             })
             //将订单选择的时间放入对应房间的时间数组中
             updateRoomDate({
@@ -111,19 +114,58 @@ const Room: React.FC = () => {
       } else {
         Toast.show({ icon: 'fail', content: '起始日期必须早于截止日期!' })
       }
-
-
-      // getRoomDetail({
-      //   _id: roomInfo?._id!
-      // }).then(res => {
-      //   console.log(res);
-      // })
-
     } else {
       Toast.show({ icon: 'fail', content: '请选择起始、截止日期!' })
-
     }
+  }
+  const showComment = () => {
+    Modal.show({
+      content: <div className={cx('comment-main')}>
+        <div className='title'>评论内容</div>
+        <div className={cx('comment-text')}>
+          <Form layout='horizontal' form={form_comment}>
+            <Form.Item name='comment-text'>
+              <TextArea style={{ '--font-size': '16px' }} rows={8} maxLength={100} showCount={true} ></TextArea>
+            </Form.Item>
+          </Form >
+        </div>
+        <div className={cx('btn-group')}>
+          <div className={cx('hide-name')}>
+            <div>匿名:</div>
+            <Form form={form_comment}>
+              <Form.Item name='isHideName' noStyle>
+                <Switch style={{ '--width': '2rem', '--height': '1.5rem' }} />
+              </Form.Item>
+            </Form>
+          </div>
+          <button className={cx('addComment')} onClick={doAddComment}>提交评论</button>
+        </div>
+      </div>,
+      closeOnMaskClick: true,
+      showCloseButton: true,
+    })
+  }
 
+  //添加评论
+  const doAddComment = () => {
+    if (form_comment.getFieldValue('comment-text') === undefined || form_comment.getFieldValue('comment-text').length === 0) {
+      Toast.show({ icon: 'fail', content: '评论内容为空!' })
+    } else {
+      let comment_id = uuidv4();
+      addComment({
+        _id: roomInfo?._id!,
+        id: comment_id,
+        photo: userInfo?.photo!,
+        name: userInfo?.name!,
+        comment_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+        comment_content: form_comment.getFieldValue('comment-text'),
+        isHideName: form_comment.getFieldValue('isHideName')
+      }).then(res => {
+        getRoomDetailById(roomInfo as RoomInfo);
+        Modal.clear();
+        Toast.show({ icon: 'success', content: '评论成功' });
+      })
+    }
   }
   useEffect(() => {
     if (history.location.state) {
@@ -131,12 +173,11 @@ const Room: React.FC = () => {
       const userInfo = getUserInfo();
       setRoomInfo(roomInfo as RoomInfo);
       serUserInfo(userInfo);
-      getRoomDetailById(roomInfo as RoomInfo)
+      getRoomDetailById(roomInfo as RoomInfo);
+      checkUserHasOrder(userInfo, roomInfo as RoomInfo)
     } else {
       history.replace(routerPath.NotFind)
     }
-
-
   }, [])
   return <div className={cx('main')}>
     <div className={cx('navBar')}>
@@ -197,7 +238,7 @@ const Room: React.FC = () => {
       <div className={cx('title')}>已预订列表</div>
       <div className={cx('table')}>
 
-        {roomInfo_new?.r_date.length != 0 ? roomInfo_new?.r_date.map((item: Date, index: number) =>
+        {roomInfo_new?.r_date.length !== 0 ? roomInfo_new?.r_date.map((item: Date, index: number) =>
           <table key={index}>
             <thead>
               <tr>
@@ -213,14 +254,41 @@ const Room: React.FC = () => {
                 <td>{item.date_end}</td>
               </tr></tbody>
           </table>) : <Empty description='暂无预订' />}
-
       </div>
     </div>
     <div className={cx('user-comment')}>
-      <div className={cx('title')}>客户评价·({roomInfo?.r_comment.length})条</div>
+      <div className={cx('head')}>
+        <div className={cx('title')}>客户评价·({roomInfo?.r_comment.length})条</div>
+        {commentBtn ?
+          <div>
+            <button className={cx('btn')} onClick={showComment}>评价</button>
+          </div> : <></>}
+      </div>
       <Divider />
       <div className={cx('content')}>
-        {roomInfo?.r_comment.length !== 0 ? 1 : <Empty description='sorry,暂无评论' />}
+        {roomComments?.length !== 0 ?
+          roomComments.map((item: CommentInfo, index: number) =>
+            <div className={cx('comment-item')} key={index}>
+              <div className={cx('left')}>
+                <div className={cx('avatar')}>
+                  {!item.isHideName ? <Avatar src={item.photo!} /> : <Avatar src='' />}
+                </div>
+                <div className={cx('user-name')}>{!item.isHideName ? item.name : '匿名用户'}</div>
+              </div>
+              <div className={cx('right')}>
+                <div className={cx('text')}>
+                  <div>{item.comment_content}</div>
+                </div>
+                <div className={cx('foot')}>
+                  <div className={cx('hr')}></div>
+                  <div className={cx('date')}>评论时间:{item.comment_date}</div>
+                </div>
+              </div>
+            </div>) :
+          <Empty description={
+            <div className={cx('comment-btn')}>
+              <div>暂无评价~</div>
+            </div>} />}
       </div>
       <Divider />
     </div>

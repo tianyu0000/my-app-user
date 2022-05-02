@@ -5,8 +5,7 @@ import { Button, ImageUploader, Modal, Toast } from 'antd-mobile';
 import { ImageUploadItem } from 'antd-mobile/es/components/image-uploader';
 import { v4 as uuidv4 } from 'uuid';
 import { upload } from '@/utils/ali-oss';
-import { getUserInfo, saveUserInfo } from '@/utils/storageUtils';
-import { UserInfo } from '@/services/entities';
+import { getUserInfo } from '@/utils/storageUtils';
 
 const cx = classNames.bind(styles);
 interface childProps {
@@ -24,10 +23,9 @@ const ChangeAvatar: React.FC<childProps> = (props) => {
   }
   //修改头像
   const doAvatarChange = () => {
-    if (avatarRef.current.length == 0) {
+    if (avatarRef.current.length === 0) {
       Toast.show({ icon: 'fail', content: '您尚未选择头像!' })
     } else {
-      console.log(props);
       props.handleSetInfo(avatarRef.current)
       Modal.clear();
       Toast.show({ icon: 'success', content: '修改头像成功!' })

@@ -37,12 +37,15 @@ export const ServicesApi = {
   //生成订单之后,更新房间的时间数组:r_date属性,
   updateRoomDate: (data: OrderApi.orderRoomId.changeRoomDateByRoomId): Promise<OrderApi.orderRoomId.ResponseData> => post(ApiPaths.updateRoomDate, data),
 
-  //用户对房间评论
-  addComment: (data: CommentApi.addComment.info): Promise<CommentApi.addComment.ResponseData> => post(ApiPaths.addComment, data),
-
   //获取房间列表
   getRoomList: (): Promise<RoomInfo[]> => get(ApiPaths.getRoomList),
 
   //获取房间信息
   getRoomDetail: (params: RoomApi.roomId.id): Promise<RoomApi.roomId.ResponseData> => get(ApiPaths.getRoomDetail, params),
+
+  //查询该用户是否在当前房间完成过订单,完成过订单才可以进行评论
+  hasOrder: (data: OrderApi.hasOrder.info): Promise<OrderApi.hasOrder.ResponseData> => get(ApiPaths.hasOrder, data),
+
+  //添加评论
+  addComment: (data: CommentApi.addComment.info): Promise<CommentApi.addComment.ResponseData> => post(ApiPaths.addComment, data),
 }

@@ -48,13 +48,29 @@ export interface OrderInfo {
   o_user_name: string
 }
 
+export interface CommentInfo {
+  _id: string,
+  photo?: string,
+  id: string,
+  name: string,
+  comment_date: string,
+  comment_content: string,
+  isHideName: boolean
+}
+
 export interface OrderDataResponse<T = any> {
-  data: T,
+  status: number,
+  [data: T],
   msg: string
 }
 
 export interface RoomDataResponse<T = any> {
   data: T,
+}
+
+export interface Date {
+  date_start: string,
+  date_end: string
 }
 
 export namespace UserApi {
@@ -131,12 +147,6 @@ export namespace RoomApi {
     }
     type ResponseData = BaseResponse<RoomInfo>;
   }
-  namespace commentId {
-    interface id {
-      c_id: string
-    }
-    type ResponseData = BaseResponse<RoomInfo>;
-  }
 }
 
 export namespace OrderApi {
@@ -183,6 +193,13 @@ export namespace OrderApi {
     }
     type ResponseData = BaseResponse<OrderInfo>
   }
+  namespace hasOrder {
+    interface info {
+      o_room_id: string,
+      o_user_id: string,
+    }
+    type ResponseData = BaseResponse<OrderInfo>
+  }
 }
 
 
@@ -202,12 +219,13 @@ export namespace EmailApi {
 export namespace CommentApi {
   namespace addComment {
     interface info {
+      _id: string
       photo?: string,
       id: string,
       name: string,
       comment_date: string,
-      comment_imgs?: string,
       comment_content: string,
+      isHideName: boolean
     }
     type ResponseData = BaseResponse<string>
   }
