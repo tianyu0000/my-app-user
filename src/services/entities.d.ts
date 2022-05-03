@@ -55,7 +55,7 @@ export interface CommentInfo {
   name: string,
   comment_date: string,
   comment_content: string,
-  isHideName: boolean
+  isHideName: string
 }
 
 export interface OrderDataResponse<T = any> {

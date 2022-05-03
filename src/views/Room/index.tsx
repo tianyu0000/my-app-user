@@ -133,7 +133,7 @@ const Room: React.FC = () => {
           <div className={cx('hide-name')}>
             <div>匿名:</div>
             <Form form={form_comment}>
-              <Form.Item name='isHideName' noStyle>
+              <Form.Item name='isHideName' noStyle initialValue={false}>
                 <Switch style={{ '--width': '2rem', '--height': '1.5rem' }} />
               </Form.Item>
             </Form>
@@ -143,6 +143,9 @@ const Room: React.FC = () => {
       </div>,
       closeOnMaskClick: true,
       showCloseButton: true,
+      afterClose: () => {
+        form_comment.resetFields();
+      }
     })
   }
 
@@ -271,9 +274,9 @@ const Room: React.FC = () => {
             <div className={cx('comment-item')} key={index}>
               <div className={cx('left')}>
                 <div className={cx('avatar')}>
-                  {!item.isHideName ? <Avatar src={item.photo!} /> : <Avatar src='' />}
+                  {item.isHideName === 'false' ? <Avatar src={item.photo!} /> : <Avatar src='' />}
                 </div>
-                <div className={cx('user-name')}>{!item.isHideName ? item.name : '匿名用户'}</div>
+                <div className={cx('user-name')}>{item.isHideName === 'false' ? item.name : '匿名用户'}</div>
               </div>
               <div className={cx('right')}>
                 <div className={cx('text')}>
