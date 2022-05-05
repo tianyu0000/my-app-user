@@ -90,7 +90,8 @@ const Room: React.FC = () => {
               o_userTel: userInfo?.userTel!,
               o_createDate: date,
               o_user_id: userInfo?._id!,
-              o_user_name: userInfo?.name!
+              o_user_name: userInfo?.name!,
+              o_room_title: roomInfo?.r_title!
             })
             //将订单选择的时间放入对应房间的时间数组中
             updateRoomDate({

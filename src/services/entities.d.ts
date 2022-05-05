@@ -189,7 +189,8 @@ export namespace OrderApi {
       o_money: Number,
       o_userTel: string,
       o_createDate: string,
-      o_user_name: string
+      o_user_name: string,
+      o_room_title: string
     }
     type ResponseData = BaseResponse<OrderInfo>
   }

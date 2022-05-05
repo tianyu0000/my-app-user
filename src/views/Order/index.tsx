@@ -127,7 +127,7 @@ const Order: React.FC = () => {
     /> :
     <div> {orderList.map((item, index) =>
       <div key={index} className={cx('card')}>
-        <Card title={'房间名:' + item.o_user_name} key={index}
+        <Card title={'房间名:' + item.o_room_title} key={index}
           bodyClassName={cx('card-body')}
           onHeaderClick={() => toRoomDetail(item)}
           headerStyle={{ 'cursor': 'pointer' }}

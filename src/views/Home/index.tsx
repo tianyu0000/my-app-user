@@ -26,7 +26,7 @@ const Home: React.FC = () => {
   return <div className={cx('main')} id='main'>
     <div className={cx('header')}>
       <div className={cx('notice')}>
-        <NoticeBar content={`尊敬的用户${userInfo?.name},欢迎使用在线酒店客房预订系统~`} color='alert' />
+        <NoticeBar content={userInfo?.name ? `尊敬的用户${userInfo?.name},欢迎使用在线酒店客房预订系统~` : `尊敬的用户,欢迎使用在线酒店客房预订系统~`} color='alert' />
       </div>
       <SwiperImgs />
       <div className={cx('control-btn')}>
