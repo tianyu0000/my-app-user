@@ -50,13 +50,14 @@ const ChangeTel: React.FC<childProps> = (props) => {
       label='再次输入'
       name='tel_2'
       rules={[{ validator: checkMobile }]}
-      extra={
-        <Button color="primary" size="small" onClick={doChangeTel}>确认更改</Button>
-      }
     >
       <Input placeholder='再次确认手机号' clearable />
     </Form.Item>
-  </Form></div>
+  </Form>
+    <div className={cx('btn')}>
+      <Button color="primary" size="small" onClick={doChangeTel}>确认更改</Button>
+    </div>
+  </div>
 }
 
 export default ChangeTel;

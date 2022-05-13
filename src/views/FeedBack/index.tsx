@@ -21,20 +21,24 @@ const FeedBack: React.FC<childProps> = ({ inputValue }) => {
   const [orderInfo, setOrderInfo] = useState<OrderInfo>();
 
   const doSendEmail = () => {
-    if (form.getFieldValue('text') === undefined || form.getFieldValue('text').length === 0) {
-      Toast.show({ icon: 'fail', content: '内容为空!' })
+    if (userInfo?.userEmail.length === 0) {
+      Toast.show({ icon: 'fail', content: <div className={cx('center')}><div>您尚未设置电子邮箱地址</div><div>请在个人中心页面设置您的邮箱</div></div>,duration:3000 })
     } else {
-      sendEmail({
-        o_id: orderInfo?.o_id!,
-        o_room_id: orderInfo?.o_room_id!,
-        username: userInfo?.name!,
-        address: userInfo?.userEmail!,
-        content: form.getFieldValue('text')
-      })
-      Toast.show({ icon: 'success', content: '反馈提交成功!' })
-      setTimeout(() => {
-        history.replace(routerPath.Order)
-      }, 3000)
+      if (form.getFieldValue('text') === undefined || form.getFieldValue('text').length === 0) {
+        Toast.show({ icon: 'fail', content: '内容为空!' })
+      } else {
+        sendEmail({
+          o_id: orderInfo?.o_id!,
+          o_room_id: orderInfo?.o_room_id!,
+          username: userInfo?.name!,
+          address: userInfo?.userEmail!,
+          content: form.getFieldValue('text')
+        })
+        Toast.show({ icon: 'success', content: '反馈提交成功!' })
+        setTimeout(() => {
+          history.replace(routerPath.Order)
+        }, 3000)
+      }
     }
   }
   useEffect(() => {
@@ -54,12 +58,10 @@ const FeedBack: React.FC<childProps> = ({ inputValue }) => {
       <Space justify='center' direction='vertical' block>
         <div>尊敬的顾客:{userInfo?.name},您好~</div>
         <Space >
-          <div className={cx('vertical-center')}> 您的邮件地址为:</div>
-          <Input value={userInfo?.userEmail} readOnly></Input>
+          {userInfo?.userEmail ? <div className={cx('vertical-center')}> 您的邮箱地址为:{userInfo?.userEmail}</div> : <div className={cx('vertical-center')}> 您尚未设置电子邮箱地址！</div>}
         </Space>
         <Space >
-          <div className={cx('vertical-center')}> 您要反馈的订单编号为:</div>
-          <Input value={orderInfo?.o_id} readOnly></Input>
+          <div className={cx('vertical-center')}> 订单编号:{orderInfo?.o_id}</div>
         </Space>
       </Space>
     </div>

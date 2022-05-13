@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { getUserInfo } from '@/utils/storageUtils';
 import moment from 'moment'
 import CountDownText from './components/LoadingToast';
+import { PayCircleOutline } from 'antd-mobile-icons'
 
 const cx = classNames.bind(styles);
 
@@ -29,6 +30,7 @@ const Room: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [commentBtn, setCommentBtn] = useState<boolean>(false);
   const [roomComments, setRoomComments] = useState<CommentInfo[]>([]);
+  const [totalCount,setTotalCount] = useState<number>();
 
   ///获取房间详细信息
   const getRoomDetailById = (key: RoomInfo) => {
@@ -80,18 +82,24 @@ const Room: React.FC = () => {
             let o_id = uuidv4();
             //创建订单时间
             let date = moment().format('YYYY-MM-DD HH:mm:ss');
+            let date1 = form.getFieldValue('date_start');
+            let date2 = form.getFieldValue('date_end');
+            let day = (form.getFieldValue('date_end') - form.getFieldValue('date_start')) / (1000 * 60 * 60 * 24);
+
             //创建订单
             createOrder({
               o_id: o_id,
               o_room_id: roomInfo?._id!,
               o_roomDate_start: moment(form.getFieldValue('date_start')).format('YYYY-MM-DD'),
               o_roomDate_end: moment(form.getFieldValue('date_end')).format('YYYY-MM-DD'),
-              o_money: roomInfo?.r_price!,
+              o_price: roomInfo?.r_price!,
               o_userTel: userInfo?.userTel!,
               o_createDate: date,
               o_user_id: userInfo?._id!,
               o_user_name: userInfo?.name!,
-              o_room_title: roomInfo?.r_title!
+              o_room_title: roomInfo?.r_title!,
+              o_day: day,
+              o_total: day * roomInfo?.r_price!
             })
             //将订单选择的时间放入对应房间的时间数组中
             updateRoomDate({
@@ -171,6 +179,32 @@ const Room: React.FC = () => {
       })
     }
   }
+
+  //判断时间是否正确变化，并给总价格正确赋值
+  const dateChange =()=>{
+    if (form.getFieldValue('date_start') && form.getFieldValue('date_end')) {
+      //判断起始日期是否在前
+      if (moment(form.getFieldValue('date_start')).format('YYYY-MM-DD') < moment(form.getFieldValue('date_end')).format('YYYY-MM-DD')) {
+        //判断起始日期是否在今天之后
+        if (moment(form.getFieldValue('date_start')).format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD')) {
+          //判断日期区间是否与其他订单时间重叠
+          if (checkDate()) {
+            let date1 = form.getFieldValue('date_start');
+            let date2 = form.getFieldValue('date_end');
+            setTotalCount(((date2 - date1) / (1000 * 60 * 60 * 24))*roomInfo?.r_price!)
+          }else{
+            setTotalCount(undefined)
+          } 
+        }else{
+          setTotalCount(undefined)
+        } 
+      }else{
+        setTotalCount(undefined)
+      } 
+    }else{
+      setTotalCount(undefined)
+    }
+  }
   useEffect(() => {
     if (history.location.state) {
       const roomInfo = history.location.state;
@@ -182,6 +216,7 @@ const Room: React.FC = () => {
     } else {
       history.replace(routerPath.NotFind)
     }
+     
   }, [])
   return <div className={cx('main')}>
     <div className={cx('navBar')}>
@@ -190,11 +225,11 @@ const Room: React.FC = () => {
       </NavBar>
     </div>
     <div className={cx('photo-view')}>
-      <Image src={roomInfo?.r_head!} width={'100%'} height={'100%'} fit='cover' onClick={() => {
+      <Image src={roomInfo?.r_photo!} width={'100%'} height={'100%'} fit='cover' onClick={() => {
         setVisible(true)
       }} />
       <ImageViewer
-        image={roomInfo?.r_head!}
+        image={roomInfo?.r_photo!}
         visible={visible}
         onClose={() => {
           setVisible(false)
@@ -216,6 +251,10 @@ const Room: React.FC = () => {
     <div className={cx('room-introduction')}>
       <div className={cx('title')}>套房信息概览</div>
       <div className={cx('icon-group')}>
+        <div className={cx('icon')}>
+          <PayCircleOutline fontSize={'2.4rem'}  />
+          <div>{roomInfo?.r_price}元/天</div>
+        </div>
         <div className={cx('icon')}>
           <Image src={Icon_1} width={'2.4rem'} />
           <div>{roomInfo?.r_bedrooms}间卧室</div>
@@ -262,7 +301,7 @@ const Room: React.FC = () => {
     </div>
     <div className={cx('user-comment')}>
       <div className={cx('head')}>
-        <div className={cx('title')}>客户评价·({roomInfo?.r_comment.length})条</div>
+        <div className={cx('title')}>客户评价·({roomInfo_new?.r_comment.length})条</div>
         {commentBtn ?
           <div>
             <button className={cx('btn')} onClick={showComment}>评价</button>
@@ -298,9 +337,9 @@ const Room: React.FC = () => {
     </div>
     <div className={cx('footer')}>
       <div className={cx('create-order')}>
-        <div className={cx('price')}>￥{roomInfo?.r_price}</div>
+        <div className={cx('price')}>{totalCount ? `￥${totalCount}`:<div style={{'width':'5rem'}}>请重新选择时间段</div>}</div>
         <div className={cx('date-form')}>
-          <Form form={form}><DatePick /></Form>
+          <Form form={form} onFieldsChange={()=>{dateChange()}}><DatePick /></Form>
         </div>
         <button className={cx('btn')} onClick={() => orderRoom()}>预订</button>
       </div>

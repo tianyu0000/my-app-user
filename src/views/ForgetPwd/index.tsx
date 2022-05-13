@@ -18,6 +18,7 @@ const ForgetPwd: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [visible, setVisible] = useState<boolean>(false);
   const [identity, setIdentity] = useState<boolean>(false);
+  const myRef = React.createRef<any>()
   //三个步骤对应的表单
   const [step_1] = Form.useForm();
   const [step_2] = Form.useForm();
@@ -26,20 +27,27 @@ const ForgetPwd: React.FC = () => {
   const reg_passWord = /^[a-zA-Z0-9]{6,16}$/;
   //确认用户名
   const doConfirmName = () => {
-    getUserInfoByName({ name: step_1.getFieldValue('userName') }).then(res => {
-      if (res) {
-        setVisible(true);
-        setUserName(step_1.getFieldValue('userName'))
-        UserInfoRef.current = res;
-        setUserInfo(UserInfoRef.current)
-      } else {
-        Toast.show({ icon: 'fail', content: '该用户不存在!' })
-      }
-    })
+    if (step_1.getFieldValue('userName') === undefined || step_1.getFieldValue('userName').length === 0) {
+      Toast.show({ icon: 'fail', content: '请输入用户名' })
+    } else {
+      getUserInfoByName({ name: step_1.getFieldValue('userName') }).then(res => {
+        if (res) {
+          setVisible(true);
+          setUserName(step_1.getFieldValue('userName'))
+          UserInfoRef.current = res;
+          setUserInfo(UserInfoRef.current)
+        } else {
+          Toast.show({ icon: 'fail', content: '该用户不存在!' })
+        }
+      })
+    }
   }
   //重置用户名
   const doResetName = () => {
     setVisible(false);
+    setIdentity(false);
+    console.log(document.getElementById('tel'));
+    
     setUserName("");
   }
   //确认手机号
@@ -100,19 +108,22 @@ const ForgetPwd: React.FC = () => {
       </Form.Item>
     </Form>
     {userName ? <div>
-      <Form form={step_2} layout='horizontal'>
+      <Form form={step_2} layout='horizontal' initialValues={{}}>
         <Form.Header >Step 2</Form.Header>
         <Form.Item label='手机号'>
           <Input placeholder='请输入内容' value={userInfo?.userTel.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2')} readOnly />
         </Form.Item>
-        <Form.Item label='确认手机号'
+        <Form.Item 
+        label='确认手机号'
           name='userTelNumber'
           extra={
+            identity ?<div style={{'color':'green','fontSize':'20px'}}>√</div> :
             <div className={styles.extraPart}>
-              <a onClick={doConfirmTel}>确认</a>
-            </div>
-          }>
-          <Input placeholder='请输入完整手机号码' />
+            <a onClick={doConfirmTel}>确认</a>
+          </div>
+          }
+          >
+          <Input id="tel" value="" placeholder='请输入完整手机号码' disabled={identity} />
         </Form.Item>
       </Form>
 

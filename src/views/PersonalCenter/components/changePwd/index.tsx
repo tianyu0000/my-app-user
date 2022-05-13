@@ -51,13 +51,13 @@ const ChangePwd: React.FC<childProps> = (props) => {
       label='再次确认密码'
       name='pwd_2'
       rules={[{ validator: checkPwd }]}
-      extra={
-        <Button color="primary" size="small" onClick={doChangePwd}>确认更改</Button>
-      }
     >
       <Input placeholder='再次确认密码' type='password' clearable />
     </Form.Item>
-  </Form></div>
+  </Form>
+  <div className={cx('btn')}>
+  <Button color="primary" size="small" onClick={doChangePwd}>确认更改</Button>
+    </div></div>
 }
 
 export default ChangePwd;

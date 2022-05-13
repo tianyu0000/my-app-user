@@ -49,7 +49,7 @@ const Content: React.FC = () => {
       if (item.r_tag === selectArea_hotRoom && item.r_type === '热门房源') { return item; }
     }).map((item: RoomInfo, index: number) =>
       <div key={index} className={cx('room-card')} onClick={() => { RoomDetail(item) }}>
-        <Image src={item.r_head} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
+        <Image src={item.r_photo} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
         <div className={cx('describe')}>
           <div className={cx('mini-font')}>热门套房:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
           <div className={cx('title')}>{item.r_title}</div>
@@ -89,7 +89,7 @@ const Content: React.FC = () => {
         if (item.r_tag === selectArea_disCountRoom && item.r_type === '特惠房源') { return item; }
       }).map((item: RoomInfo, index: number) =>
         <div key={index} className={cx('room-card')} onClick={() => { RoomDetail(item) }}>
-          <Image src={item.r_head} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
+          <Image src={item.r_photo} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
           <div className={cx('describe')}>
             <div className={cx('mini-font')}>特惠套房:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
             <div className={cx('title')}>{item.r_title}</div>
@@ -127,7 +127,7 @@ const Content: React.FC = () => {
       if (item.r_tag === selectArea_qualityRoom && item.r_type === '品质房源') { return item; }
     }).map((item: RoomInfo, index: number) =>
       <div key={index} className={cx('room-card')} onClick={() => { RoomDetail(item) }}>
-        <Image src={item.r_head} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
+        <Image src={item.r_photo} width={'100%'} height={'5rem'} fit='cover' style={{ borderRadius: 10 }} />
         <div className={cx('describe')}>
           <div className={cx('mini-font')}>品质套房:{item.r_bedrooms}室{item.r_wc}卫{item.r_beds}床</div>
           <div className={cx('title')}>{item.r_title}</div>

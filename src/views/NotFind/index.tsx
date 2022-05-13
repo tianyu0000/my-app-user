@@ -9,7 +9,7 @@ export default () => {
     document.body.style.background = '#ffffff'
   }, [])
   return (<>
-    <ErrorBlock fullPage={true} description={<><Button color='primary' onClick={() => { history.replace(routerPath.Home) }}>返回首页</Button></>} />
+    <ErrorBlock status='empty' fullPage={true} description={<><Button color='primary' onClick={() => { history.replace(routerPath.Home) }}>返回首页</Button></>} />
 
   </>)
 }

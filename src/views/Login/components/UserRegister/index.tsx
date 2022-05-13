@@ -80,34 +80,38 @@ const UserRegister: React.FC = () => {
   //注册
   const doUserRegister = () => {
     if (form.getFieldValue('pwd_1') === form.getFieldValue('pwd_2')) {
-      Register({
-        name: form.getFieldValue('name'),
-        password: form.getFieldValue('pwd_1'),
-        photo: avatarRef.current,
-        userTel: form.getFieldValue('userTel'),
-        userEmail: form.getFieldValue('userEmail')
-      }).then(res => {
-        switch (res.status) {
-          case 1000:
-            Toast.show({ icon: 'success', content: "注册成功!" })
-            Modal.clear();
-            break;
-          case 1001:
-            Toast.show({ icon: 'fail', content: "该用户名已注册!" })
-            break;
-          case 1002:
-            Toast.show({ icon: 'fail', content: "注册失败!" })
-            break;
-          case 1003:
-            Toast.show({ icon: 'fail', content: "数据库查询出错!" })
-            break;
-          case 1004:
-            Toast.show({ icon: 'fail', content: "注册失败,未输入账号或密码!" })
-            break;
-          default:
-            console.log(res);
-        }
-      })
+      if((form.getFieldValue('userTel')===undefined || form.getFieldValue('userTel').length===0)){
+        Toast.show({icon:'fail',content:'手机号不能为空'})
+      }else{
+        Register({
+          name: form.getFieldValue('name'),
+          password: form.getFieldValue('pwd_1'),
+          photo: avatarRef.current,
+          userTel: form.getFieldValue('userTel'),
+          userEmail: form.getFieldValue('userEmail')
+        }).then(res => {
+          switch (res.status) {
+            case 1000:
+              Toast.show({ icon: 'success', content: "注册成功!" })
+              Modal.clear();
+              break;
+            case 1001:
+              Toast.show({ icon: 'fail', content: "该用户名已注册!" })
+              break;
+            case 1002:
+              Toast.show({ icon: 'fail', content: "注册失败!" })
+              break;
+            case 1003:
+              Toast.show({ icon: 'fail', content: "数据库查询出错!" })
+              break;
+            case 1004:
+              Toast.show({ icon: 'fail', content: "注册失败,未输入账号或密码!" })
+              break;
+            default:
+              console.log(res);
+          }
+        })
+      }
     } else {
       Toast.show({ icon: 'fail', content: '两次输入的密码不一致' });
     }
@@ -123,7 +127,7 @@ const UserRegister: React.FC = () => {
           maxCount={1}
         />
       </div>
-      <Form.Header>账号:</Form.Header>
+      <Form.Header>用户名:</Form.Header>
       <Form.Item name="name" rules={[{ validator: checkUserName }]}>
         <Input placeholder='请输入' />
       </Form.Item>
@@ -135,7 +139,7 @@ const UserRegister: React.FC = () => {
         <Input placeholder='请再次输入密码' type='password' />
       </Form.Item>
       <Form.Header>手机号:</Form.Header>
-      <Form.Item name="userTel" rules={[{ validator: checkMobile }]}>
+      <Form.Item name="userTel" rules={[{ required:true,validator: checkMobile }]}>
         <Input placeholder='请输入' />
       </Form.Item>
       <Form.Header>电子邮箱:</Form.Header>

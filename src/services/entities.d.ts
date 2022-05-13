@@ -7,7 +7,7 @@ export interface BaseResponse<T = any> {
 }
 
 export interface UserInfo {
-  isAdmin: Number,
+  isAdmin: number,
   name: string,
   password: string,
   photo: string,
@@ -18,17 +18,17 @@ export interface UserInfo {
 
 export interface RoomInfo {
   _id: string,
-  r_head: string,
+  r_photo: string,
   r_imgs: string[],
   r_title: string,
   r_desc: string,
-  r_bedrooms: Number,
-  r_beds: Number,
-  r_wc: Number,
-  r_people: Number,
+  r_bedrooms: number,
+  r_beds: number,
+  r_wc: number,
+  r_people: number,
   r_comment: Array<any>,
   r_date: any[],
-  r_price: Number,
+  r_price: number,
   r_tag: string,
   r_type: string
 }
@@ -39,13 +39,15 @@ export interface OrderInfo {
   o_id: string,
   o_room_id: string,
   o_roomDate_start: string,
-  o_roomDate_end: stringm,
+  o_roomDate_end: string,
+  o_room_title:string,
   o_user_id: string,
-  o_money: Number,
+  o_price: number,
+  o_total:number,
   o_userTel: string,
   o_createDate: string,
-  o_state: Number,
-  o_user_name: string
+  o_state: number,
+  o_user_name: string,
 }
 
 export interface CommentInfo {
@@ -125,17 +127,17 @@ export namespace RoomApi {
 
   namespace addRoom {
     interface form {
-      r_head: string,
+      r_photo: string,
       r_imgs: Array,
       r_title: string,
       r_desc: string,
-      r_bedrooms: Number,
-      r_beds: Number,
-      r_wc: Number,
-      r_people: Number,
+      r_bedrooms: number,
+      r_beds: number,
+      r_wc: number,
+      r_people: number,
       r_comment: Array,
       r_date: Array,
-      r_price: Number,
+      r_price: number,
       r_tag: string,
       r_type: string
     }
@@ -186,11 +188,13 @@ export namespace OrderApi {
       o_roomDate_start: string,
       o_roomDate_end: string,
       o_user_id: string,
-      o_money: Number,
+      o_price: number,
       o_userTel: string,
       o_createDate: string,
       o_user_name: string,
-      o_room_title: string
+      o_room_title: string,
+      o_day:number,
+      o_total:number,
     }
     type ResponseData = BaseResponse<OrderInfo>
   }

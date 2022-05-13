@@ -134,10 +134,11 @@ const Order: React.FC = () => {
           extra={<RightOutline />}>
           <div className={cx('card-content')}>
             <div>订单号: {item.o_id}</div>
-            <div>订单价格: {item.o_money} 元</div>
+            <div>房间单价: {item.o_price} 元</div>
             <div>房间起始日期: {item.o_roomDate_start}</div>
             <div>房间截止日期: {item.o_roomDate_end}</div>
             <div>订单创建时间: {item.o_createDate}</div>
+            <div>订单总金额: {item.o_total} 元</div>
             <div>订单状态: {switchOrderState(item.o_state)}</div>
           </div>
           <div className={cx('action-btn')}>

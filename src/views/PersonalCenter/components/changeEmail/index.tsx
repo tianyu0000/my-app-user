@@ -50,13 +50,15 @@ const ChangeEmail: React.FC<childProps> = (props) => {
       label='再次输入'
       name='email_2'
       rules={[{ validator: checkEmail }]}
-      extra={
-        <Button color="primary" size="small" onClick={doChangeEmail}>确认更改</Button>
-      }
+
     >
       <Input placeholder='再次确认邮箱地址' clearable />
     </Form.Item>
-  </Form></div>
+  </Form>
+    <div className={cx('btn')}>
+      <Button color="primary" size="small" onClick={doChangeEmail}>确认更改</Button>
+    </div>
+  </div>
 }
 
 export default ChangeEmail;
